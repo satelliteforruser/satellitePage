@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Rで学ぶ衛星データ解析基礎</title>
+  <meta name="description" content="Rで学ぶ衛星データ解析基礎" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Rで学ぶ衛星データ解析基礎" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Rで学ぶ衛星データ解析基礎" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Rで学ぶ衛星データ解析基礎</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path=""><a href="#初めに"><i class="fa fa-check"></i>初めに</a>
+<ul>
+<li class="chapter" data-level="0.1" data-path=""><a href="#貢献するには"><i class="fa fa-check"></i><b>0.1</b> 貢献するには</a></li>
+<li class="chapter" data-level="0.2" data-path=""><a href="#プロジェクトに参加"><i class="fa fa-check"></i><b>0.2</b> プロジェクトに参加</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Rで学ぶ衛星データ解析基礎</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Rで学ぶ衛星データ解析基礎</h1>
+</div>
+<div id="初めに" class="section level1 unnumbered hasAnchor">
+<h1>初めに<a href="#初めに" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>ここは、<em>Pythonで学ぶ衛星データ解析基礎</em>で紹介される解析をRで再現するオンラインホームである。</p>
+<p><strong>注意</strong>: 本ページで取り扱う<em>Pythonで学ぶ衛星データ解析基礎</em>は、<a href="https://gihyo.jp/book/2022/978-4-297-13232-3">技術評論社</a>からハードブック及びオンラインブックで出版されている。また、サンプルファイルのダウンロードや正誤表などの確認は、<a href="https://gihyo.jp/book/2022/978-4-297-13232-3/support">サポートページ</a>から可能である。</p>
+<div id="貢献するには" class="section level2 hasAnchor" number="0.1">
+<h2><span class="header-section-number">0.1</span> 貢献するには<a href="#貢献するには" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>bookdownでは、GitHubのアカウント（<a href="https://github.com/">GitHub</a>）があれば、Wikiを編集するように簡単に本を編集することが可能である。GitHubにログイン後、書籍サイトの右パネルにある「Edit this page」アイコンをクリックする。これで、今読んでいる本ページを生成したソースR Markdownファイルの編集可能なバージョンに移動する。</p>
+<p>この本の内容に関する問題提起（コードが実行されないなど）や機能リクエストは、Issue Tracker課題追跡システムで確認できる。</p>
+<p>管理者と貢献者は、このリポジトリの行動規範に従うこととする。</p>
+</div>
+<div id="プロジェクトに参加" class="section level2 hasAnchor" number="0.2">
+<h2><span class="header-section-number">0.2</span> プロジェクトに参加<a href="#プロジェクトに参加" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>もし、この本が役に立つと思ったら、以下の方法で応援していただきたい。</p>
+<ul>
+<li>この本について、人々に話す</li>
+<li>一冊購入する</li>
+<li>再現可能な研究に向けたオープンソースを皆に広める。とくに、R における地理データを扱う（これは、自分のスキルアップに最適な方法でもある）
+オンラインで本書について伝える。例えば、Twitterの #geocomprハッシュタグ を使う（geocompr.github.ioのゲストブックを参照）、本書を使ったコースについて知らせる、等</li>
+<li>引用またはリンクを貼る</li>
+<li>geocompr GitHub repository のスターを押す</li>
+<li>Amazon や Goodreads でレビューを書く</li>
+<li>GitHub または Twitter で、質問や提案を行う</li>
+<li>質問に答えたり、質問がわかりにくい場合に説明や再現例を求めるなど何らかの応答をする</li>
+</ul>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/%s",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

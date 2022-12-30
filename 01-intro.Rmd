@@ -215,4 +215,4 @@ stac_rgb_crop <- crop(x = stac_rgb_reproject, y = m)
 # 取得した衛星データをRGB表示
 plotRGB(stac_rgb_crop, axes = TRUE, stretch = "lin")
 ```　
-![](Figs/stac_rgb.png)
+![](Figs/stac_rgb2.png)

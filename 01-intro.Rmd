@@ -216,3 +216,173 @@ stac_rgb_crop <- crop(x = stac_rgb_reproject, y = m)
 plotRGB(stac_rgb_crop, axes = TRUE, stretch = "lin")
 ```　
 ![](Figs/stac_rgb2.png)
+
+## Landsat8の表示
+
+　まずは、画像を読み込みます。今回、読み込む画像のファイル名が長く、また、ファイルの種類も同じため、使用予定のファイルを一括で読み込み、その後で、バンドごとにデータを読み込みます。
+
+```{r, eval = FALSE}
+images <- list.files("フォルダ名", pattern = ".TIF") # 指定フォルダに存在する".TIF"データを一括読込
+b2_image <- rast(images[1])
+b3_image <- rast(images[2])
+b4_image <- rast(images[3])
+```
+
+　読み込んだデータの内容を確認します。まずは、ヒストグラムでデータのばらつきを確認します。
+
+```{r, eval = FALSE}
+par(mfrow = c(3,1)) # 複数のヒストグラムの表示、各ヒストグラムの余白設定
+hist(b2_image, breaks = 300, main = "BlueBand", xlim = c(1, 65545))
+hist(b3_image, breaks = 300, main = "GreenBand", xlim = c(1, 65545))
+hist(b4_image, breaks = 300, main = "RedBand", xlim = c(1, 65545))
+dev.off() # ヒストグラムの設定を解除
+```
+
+　次に、画像を表示します。
+
+```{r, eval = FALSE}
+par(mfrow = c(1,3)) # 複数の画像の表示
+plot(b2_image, range = c(8000, 15000), col = topo.colors(45), main = "BlueBand", legend = FALSE)
+plot(b3_image, range = c(7000, 13000), col = terrain.colors(45), main = "GreenBand", legend = FALSE)
+plot(b4_image, range = c(6000, 12000), col = heat.colors(45), main = "RedBand", legend = FALSE)
+dev.off() # 画像表示の設定を解除
+```
+
+![](Figs/rgb_landsat8.png)
+
+### 4隅の緯度経度に基づくポリゴンの作成
+
+　地図を見ながらのポリゴン作成はeditMap()を活用して行いましたが、今回は4隅の緯度経度からポリゴンを作成します。少しややこしいですが、以下のように作成します。
+
+```{r, eval = FALSE}
+aoi <- as(raster::extent(139.7101, 139.7201, 35.6721, 35.6841), "SpatialPolygons")
+aoi <- st_as_sf(aoi, crs = 4612)
+st_crs(aoi) <- "+proj=longlat +ellps=WGS84 +no_defs"
+```
+　
+　作成できたら、データを確認します。
+
+```{r, eval = FALSE}
+mapview(aoi)
+```
+![](Figs/aoi2.png)
+
+### バンド4,8の画像を作成したポリゴンで切り取りから表示
+
+　画像の読み込みから、関心領域での切り取り、画像の表示は、上述した通りですので、割愛しますが、コードとしては以下となります。
+
+```{r, eval = FALSE}
+# バンド4,8の読み込み
+images <- list.files("フォルダ名", pattern = ".TIF")
+b4_image <- rast(images[4])
+b8_image <- rast(images[5])
+
+# ファイルのnameを変更
+names(b4_image) <- "b4"
+names(b8_image) <- "b8"
+
+# ファイルの座標変更
+b4_image_reproject <- project(b4_image, "EPSG:4326")
+b8_image_reproject <- project(b8_image, "EPSG:4326")
+
+# 画像の切り出し
+b4_image_crop <- crop(b4_image_reproject, aoi)
+b8_image_crop <- crop(b8_image_reproject, aoi)
+
+# 画像の表示
+par(mfrow = c(1,2))
+plot(b4_image_crop, col = gray.colors(100), legend = FALSE)
+plot(b8_image_crop, col = gray.colors(100), legend = FALSE)
+dev.off()
+```
+![](Figs/b4_b8.png)
+### カラー合成
+
+　Landsat8のデータを用いてトゥルーカラー、フォルスカラー、ナチュラルカラー画像を表示します。手順は上述した通りですので割愛します。コードは、以下となります。
+
+```{r, eval = FALSE}
+# 関心領域の生成
+m2 <- editMap()
+st_write(m2, "m2.geojson")
+
+# バンド2,3,4,5の読み込み
+images <- list.files("フォルダ名", pattern = ".TIF")
+b2_image <- rast(images[1])
+b3_image <- rast(images[2])
+b4_image <- rast(images[3])
+b5_image <- rast(images[4])
+
+# ファイルのnameを変更
+names(b2_image) <- "b2"
+names(b3_image) <- "b3"
+names(b4_image) <- "b4"
+names(b5_image) <- "b5"
+
+# ファイルの座標変更
+b2_image_reproject <- project(b2_image, "EPSG:4326")
+b3_image_reproject <- project(b3_image, "EPSG:4326")
+b4_image_reproject <- project(b4_image, "EPSG:4326")
+b5_image_reproject <- project(b5_image, "EPSG:4326")
+
+# 画像の切り出し
+b2_image_crop <- crop(b2_image_reproject, m2)
+b3_image_crop <- crop(b3_image_reproject, m2)
+b4_image_crop <- crop(b4_image_reproject, m2)
+b5_image_crop <- crop(b5_image_reproject, m2)
+
+# 各画像の合成
+allImages <- c(b2_image_crop, b3_image_crop, b4_image_crop, b5_image_crop)
+
+# 画像の表示
+par(mfrow = c(1,3))
+plotRGB(allImages, r = 3, g = 2, b = 1, stretch = "lin") # トゥルーカラー
+plotRGB(allImages, r = 4, g = 3, b = 2, stretch = "lin") # フォルスカラー
+plotRGB(allImages, r = 3, g = 4, b = 2, stretch = "lin") # ナチュラルカラー
+dev.off()
+```
+![](Figs/3color_landsat8.png)
+### パンシャープン画像の生成
+
+　Landsat8のデータでは、解像度15mのバンド8（パンクロマティック）を活用することで、解像度30mの他のバンドの解像度を15mにまで引き上げることができます。その処理のことを、パンシャープン処理と言います。
+
+　まずは、パンシャープン処理に必要なRStoolboxパッケージをインストールし、読み込みます。
+
+```{r, eval = FALSE}
+install.packages("RStoolbox")
+library(RStoolbox)
+```
+
+　次に、パンシャープン用のバンド8を読み込みます。パンシャープン処理を受ける他のバンドについては先ほど作成した変数allImagesを用います。また、パンシャープン処理を行うには、パンシャープン処理の基になるデータ（ここではバンド8）とパンシャープン処理を受けるデータ（ここではallImages）の情報（crsなど）を同じにする必要がありますので、その加工もしておきます。
+
+```{r, eval = FALSE}
+# バンド8の読み込み
+b8_image <- rast(images[5])
+
+# ファイルのnameを変更
+names(b8_image) <- "b8"
+
+# ファイルの座標変更
+b8_image_reproject <- project(b8_image, "EPSG:4326")
+
+# 画像の切り出し
+b8_image_crop <- crop(b8_image_reproject, m2)
+```
+
+　いよいよ、パンシャープン処理を行います。パンシャープン処理は、RStoolboxパッケージのpanSharpenを用いることでできます。コードとしては次のようになります。
+　RStoolbox::panSharpen(パンシャープン処理を受けるデータ, パンシャープン処理の基になるデータ, RGBの設定, パンシャープン処理の方法)
+
+```{r, eval = FALSE}
+allImages_pan <- RStoolbox::panSharpen(allImages, b8_image_crop, r = 3, g = 2, b = 1, method = "brovey")
+```
+
+　パンシャープン画像を生成できましたので、元画像と比較します。
+
+```{r, eval = FALSE}
+par(mfrow = c(1,2))
+plotRGB(allImages, r = 3, g = 2, b = 1, stretch = "lin")
+plotRGB(allImages_pan, r = 3, g = 2, b = 1, stretch = "lin")
+dev.off()
+```
+![](Figs/panshapen.png)
+
+
